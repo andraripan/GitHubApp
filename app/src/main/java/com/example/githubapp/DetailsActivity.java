@@ -48,9 +48,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private String requestUrl;
     private String responseData = "";
 
-    Dialog dialog;
-    WebView webView;
-    Button close;
+    private Dialog dialog;
+    private WebView webView;
+    private Button close;
 
 
     private String READ_ME_DOMAIN = "https://api.github.com/repos/";
