@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailsActivity">
+
+   <android.support.v7.widget.CardView
+       android:id="@+id/avatarCardView"
+       android:layout_width="150dp"
+       android:layout_height="150dp"
+       android:layout_marginTop="5dp"
+       android:layout_marginStart="10dp"
+       android:layout_marginEnd="10dp"
+       android:layout_alignParentStart="true"
+       android:elevation="7dp"
+       app:cardCornerRadius="20dp"
+       android:layout_alignParentLeft="true"
+       android:layout_marginLeft="10dp">
+
+       <ImageView
+           android:id="@+id/avatar"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent" />
+   </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/avatarCardView"
+        android:textStyle="bold|italic"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="Name"/>
+
+    <TextView
+        android:id="@+id/fullName"
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@+id/avatarCardView"
+        android:text="Full Name"/>
+
+    <TextView
+        android:id="@+id/ownerTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/avatarCardView"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/fullName"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="Owner: "/>
+    <TextView
+        android:id="@+id/owner"
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/ownerTv"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fullName"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:text="Owner"/>
+
+    <TextView
+        android:id="@+id/linkTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Link: "
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_below="@+id/avatarCardView"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/link"
+        android:autoLink="web"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatarCardView"
+        android:layout_toRightOf="@+id/linkTv"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        android:text="Link"/>
+
+    <LinearLayout
+        android:id="@+id/forksLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:weightSum="2"
+        android:layout_below="@id/link">
+    <TextView
+        android:id="@+id/forkstv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Forks: "
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:textSize="18sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/forksCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="forks count"
+        android:textAlignment="textEnd"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:textSize="18sp"
+        android:layout_marginRight="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/watchersLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/forksLayout">
+        <TextView
+            android:id="@+id/watchersTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Watchers: "
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/watchersCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="watchers count"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textSize="18sp"
+            android:layout_marginRight="10dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/readmeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
+        android:text="README"
+        android:layout_below="@+id/watchersLayout"/>
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
