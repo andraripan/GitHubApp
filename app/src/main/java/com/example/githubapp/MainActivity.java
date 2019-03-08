@@ -1,13 +1,17 @@
 package com.example.githubapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView repoRecyclerView;
+    private Button retryButton;
     private RepoAdapter adapter;
     private ArrayList<Repository> repositories = new ArrayList<>();
     private String responseData = "";
@@ -38,11 +43,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         repoRecyclerView = (RecyclerView) findViewById(R.id.repo_rv);
         repoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        retryButton = (Button) findViewById(R.id.retryBtn);
+        retryButton.setOnClickListener(this);
 
         adapter = new RepoAdapter(this, repositories);
         repoRecyclerView.setAdapter(adapter);
 
-       new MyAsyncTask().execute();
+        if(isNetworkConnected()) {
+            new MyAsyncTask().execute();
+            retryButton.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(this, "Please check your internet connection and try again!", Toast.LENGTH_LONG).show();
+            retryButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 
     @Override
@@ -51,6 +70,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.details:
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.retryBtn:
+                if(isNetworkConnected()) {
+                    new MyAsyncTask().execute();
+                    retryButton.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(this, "Please check your internet connection and try again!", Toast.LENGTH_LONG).show();
+                    retryButton.setVisibility(View.VISIBLE);
+                }
+                break;
+
         }
     }
 
