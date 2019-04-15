@@ -1,8 +1,10 @@
 package com.example.githubapp;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +13,13 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.fidel.sdk.Fidel;
+import com.fidel.sdk.LinkResult;
+import com.fidel.sdk.LinkResultError;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -39,7 +45,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private String repoName;
     private String repoFullName;
     private String repoOwner;
-    private String repoLink;
+    public static String repoLink;
     private int repoForks;
     private int repoWathchers;
     private String ownerImageUrl;
@@ -51,7 +57,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private Dialog dialog;
     private WebView webView;
     private Button close;
-
+    private Button goToDropBox;
+    private Button loginDropbox;
 
     private String READ_ME_DOMAIN = "https://api.github.com/repos/";
 
@@ -69,19 +76,21 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         watchers = (TextView) findViewById(R.id.watchersCount);
         readMe = (Button) findViewById(R.id.readmeBtn);
         backBtn = (Button) findViewById(R.id.backBtn);
+        goToDropBox = (Button) findViewById(R.id.goToDropBox);
+        goToDropBox.setOnClickListener(this);
+
 
         SharedPreferences preferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         repoName = preferences.getString("name", "");
-        repoFullName =  preferences.getString("fullName","");
-        repoOwner =  preferences.getString("ownerName","");
-        repoLink =  preferences.getString("link","");
-        repoForks = preferences.getInt("forks",0);
-        repoWathchers =  preferences.getInt("watchers", 0);
-        ownerImageUrl =  preferences.getString("ownerImageUrl","");
+        repoFullName = preferences.getString("fullName", "");
+        repoOwner = preferences.getString("ownerName", "");
+        repoLink = preferences.getString("link", "");
+        repoForks = preferences.getInt("forks", 0);
+        repoWathchers = preferences.getInt("watchers", 0);
+        ownerImageUrl = preferences.getString("ownerImageUrl", "");
 
 
-
-        if(avatar != null) {
+        if (avatar != null) {
             RequestOptions options = new RequestOptions()
                     .error(R.drawable.ic_launcher_background);
             Glide.with(this)
@@ -114,8 +123,10 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         webView.clearCache(true);
 
         new MyAsyncTask().execute();
-    }
 
+        Fidel.apiKey = "pk_test_4f4e567e-2d77-405a-8c1b-a51a26ad0330";
+        Fidel.programId = "1a74a811-575d-4e75-bffd-acfa99e7fd7e";
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -130,8 +141,27 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                     dialog.dismiss();
                 }
                 break;
+            case R.id.goToDropBox:
+                Fidel.present(DetailsActivity.this);
+                break;
 
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == Fidel.FIDEL_LINK_CARD_REQUEST_CODE){
+            if(data != null && data.hasExtra(Fidel.FIDEL_LINK_CARD_RESULT_CARD)){
+                LinkResult card = (LinkResult) data.getParcelableExtra(Fidel.FIDEL_LINK_CARD_RESULT_CARD);
+                LinkResultError error = card.getError();
+                if (error != null) {
+                    Toast.makeText(this, "Request failed!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Card added successfully!", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 
@@ -169,5 +199,4 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             webView.loadUrl(readMeUrl);
         }
     }
-
 }

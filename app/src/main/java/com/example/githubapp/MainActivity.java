@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(ArrayList<Repository> repos) {
             super.onPostExecute(repos);
-
             repositories.addAll(repos);
             adapter.notifyDataSetChanged();
             progDailog.dismiss();
